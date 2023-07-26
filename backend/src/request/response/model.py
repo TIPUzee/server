@@ -4,14 +4,21 @@ from typing import Callable
 
 
 class Response(Exception):
-    def __init__(self, response_code: int, **kwargs) -> None:
+    def __init__(self, response_code:int, _html:str='', **kwargs) -> None:
         self.response_code = response_code
         self.kwargs = kwargs
+        self._html: str = _html
 
     def res(self):
+        if self._html: 
+            return self._html, self.response_code
         return self.kwargs, self.response_code
 
     __handler_count = 0
+
+    @staticmethod
+    def html(_html:str):
+        return Response(response_code=200, _html=_html)
 
     @staticmethod
     def success(**kwargs):
@@ -42,7 +49,6 @@ class Response(Exception):
         def decorator(func: Callable[[], None]):
             def wrapper():
                 try:
-                    print('handle wrapper')
                     func()
                     raise Response.server(reason='NO Request Response Was Raised')
                 except Response as e:
