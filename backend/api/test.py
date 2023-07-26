@@ -7,7 +7,7 @@ from src.utils.enums import *
 @APP.route('')
 @Request.Response.handle()
 def home(**kwargs: dict) -> None:
-    raise Request.Response.success(test='Hii')
+    raise Request.Response.success(test='Hiii')
 
 @APP.route('/test')
 @Request.Response.handle()
